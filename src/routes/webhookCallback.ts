@@ -13,6 +13,15 @@ dotenv.config({ path: '.env.local' });
 
 const router = Router();
 
+/**
+ * Middleware function to check the presence of required environment variables.
+ * If the required variables are not found, it sends a server configuration error response.
+ * Otherwise, it sets the verificationToken and appSecret in the app.locals object and calls the next middleware.
+ *
+ * @param req - The Express Request object.
+ * @param res - The Express Response object.
+ * @param next - The next middleware function.
+ */
 const checkEnvVariables = (req: Request, res: Response, next: NextFunction) => {
   const verificationToken = process.env.VERIFICATION_TOKEN;
   const appSecret = process.env.APP_SECRET;
@@ -26,6 +35,16 @@ const checkEnvVariables = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
+/**
+ * Validates the webhook payload by comparing the signature with the expected signature.
+ * If the signature is invalid or not provided, it sends an appropriate response.
+ * If the payload is not a valid JSON, it sends a "Invalid JSON" response.
+ * Otherwise, it parses the payload as JSON and calls the next middleware.
+ *
+ * @param req - The Express request object.
+ * @param res - The Express response object.
+ * @param next - The Express next function.
+ */
 const validateWebhookPayload = (
   req: Request,
   res: Response,
@@ -50,7 +69,7 @@ const validateWebhookPayload = (
   }
 
   try {
-    req.body = JSON.parse(body); // Replace raw text with parsed JSON
+    req.body = JSON.parse(body);
     next();
   } catch (error) {
     return res.status(400).send('Invalid JSON');

@@ -74,7 +74,7 @@ type MessageType =
   | 'unknown'
   | 'video';
 
-interface AudioMessage {
+export interface AudioMessage {
   type: 'audio';
   audio: {
     id: string;
@@ -96,7 +96,7 @@ interface DocumentMessage {
   mime_type: string;
   id: string;
 }
-interface ImageMessage {
+export interface ImageMessage {
   type: 'image';
   image: {
     caption: string;
@@ -165,7 +165,7 @@ interface SystemMessage {
   customer: string;
 }
 
-interface TextMessage {
+export interface TextMessage {
   type: 'text';
   text: {
     body: string;
