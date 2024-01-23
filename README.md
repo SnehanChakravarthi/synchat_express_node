@@ -1,3 +1,13 @@
+# synchat_express_bun
+
+## Install Dependencies
+
+To install the necessary dependencies for this project, run the following command in your terminal:
+
+```bash
+npm install
+```
+
 # Environment Setup Instructions
 
 To configure your local environment for this project, follow these steps:
@@ -18,3 +28,11 @@ VERIFICATION_TOKEN=
 APP_SECRET=
 OPENAI_API_KEY=
 ```
+
+## Start the server
+
+```bash
+npm run dev
+```
+
+This project was created using `npm init`.
