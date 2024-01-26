@@ -9,7 +9,7 @@ import type { WhatsAppWebhookPayload } from '../utils/types';
 import dotenv from 'dotenv';
 import { processPayload } from '../actions/processPayload';
 
-dotenv.config({ path: '.env.local' });
+dotenv.config({ path: '.env' });
 
 const router = Router();
 
@@ -89,12 +89,10 @@ router.get('/api/webhook', (req: Request, res: Response) => {
   const challenge = req.query['hub.challenge'];
 
   if (typeof challenge === 'string') {
-    const challengeInt = parseInt(challenge);
-
     if (mode && token) {
       if (mode === 'subscribe' && token === verificationToken) {
         console.log('WEBHOOK_VERIFIED');
-        res.status(200).send(challengeInt);
+        res.status(200).send(challenge);
       } else {
         res.sendStatus(403);
       }
@@ -114,5 +112,9 @@ router.post(
     return res.sendStatus(200);
   }
 );
+
+router.get('/api', (req: Request, res: Response) => {
+  res.send('API is running');
+});
 
 export default router;

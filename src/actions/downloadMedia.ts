@@ -3,7 +3,7 @@ import path from 'path';
 import axios, { AxiosRequestConfig } from 'axios';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: '.env.local' });
+dotenv.config({ path: '.env' });
 
 const headers = {
   Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
@@ -37,30 +37,26 @@ export const downloadMedia = async (
   };
 
   try {
+    const mediaDir = path.join(__dirname, '..', 'media');
+    if (!fs.existsSync(mediaDir)) {
+      console.log('Creating media directory');
+      await fs.promises.mkdir(mediaDir, { recursive: true });
+    }
+
     const response = await axios.request(config);
     const binaryData = response.data;
 
     switch (mediaType) {
       // Fetch the image and return the base64 string
       case 'image':
-        const base64FilePath = path.join(
-          __dirname,
-          '..',
-          'media',
-          'base64MediaFile.txt'
-        );
+        const base64FilePath = path.join(mediaDir, 'base64MediaFile.txt');
         const base64Data = Buffer.from(binaryData, 'binary').toString('base64');
         await fs.promises.writeFile(base64FilePath, base64Data);
         return { base64Data };
 
       case 'audio':
         // Fetch the audio and return the file path
-        const filePath = path.join(
-          __dirname,
-          '..',
-          'media',
-          `mediaFile.${fileExtension}`
-        );
+        const filePath = path.join(mediaDir, `mediaFile.${fileExtension}`);
         await fs.promises.writeFile(filePath, binaryData);
         return { filePath };
 

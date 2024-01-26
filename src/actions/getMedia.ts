@@ -2,7 +2,7 @@ import axios from 'axios';
 import { downloadMedia, DownloadMediaResponse } from './downloadMedia';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: '.env.local' });
+dotenv.config({ path: '.env' });
 
 const headers = {
   Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
